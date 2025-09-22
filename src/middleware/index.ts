@@ -1,7 +1,7 @@
-import { sequence } from 'astro:middleware'
+import { defineMiddleware } from 'astro:middleware'
 import type { MiddlewareHandler } from 'astro'
 
-export const onRequest: MiddlewareHandler = async (context, next) => {
+export const onRequest: MiddlewareHandler = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url)
 
   if (url.pathname === '/health') {
@@ -12,4 +12,4 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const res = await next();
   res.headers.set('astro-debug', `res.status=${res.status}`)
   return res;
-}
+})
